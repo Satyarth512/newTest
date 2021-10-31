@@ -43,7 +43,7 @@ class _OtpScreenState extends State<OtpScreen> {
             child: Align(
               alignment: Alignment.center,
               child: Text(
-                'Verify +91${widget.phone}',
+                'Verify ${widget.phone}',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 25,
@@ -103,7 +103,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
   _verifyPhone() async {
     await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: '+91${widget.phone}',
+        phoneNumber: '${widget.phone}',
         verificationCompleted: (PhoneAuthCredential credential) async {
           await FirebaseAuth.instance
               .signInWithCredential(credential)
@@ -153,7 +153,7 @@ class _OtpScreenState extends State<OtpScreen> {
         );
       } else {
         data.doc(_auth.currentUser.uid).set({
-          "number": '+91${widget.phone}',
+          "number": '${widget.phone}',
           "token": token,
           'name': '',
         });

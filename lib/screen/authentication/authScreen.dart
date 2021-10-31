@@ -1,3 +1,8 @@
+import 'package:country_pickers/country.dart';
+import 'package:country_pickers/country_picker_cupertino.dart';
+import 'package:country_pickers/country_picker_dialog.dart';
+import 'package:country_pickers/country_picker_dropdown.dart';
+import 'package:country_pickers/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -13,6 +18,28 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  Country _selectedDialogCountry =
+  CountryPickerUtils.getCountryByPhoneCode('90');
+
+  Country _selectedFilteredDialogCountry =
+  CountryPickerUtils.getCountryByPhoneCode('90');
+  String code = "+91";
+
+  Widget _buildDropdownItem(Country country) => Container(
+    child: Row(
+      children: <Widget>[
+        CountryPickerUtils.getDefaultFlagImage(country),
+        SizedBox(
+          width: 8.0,
+
+        ),
+        Text("+${country.phoneCode}(${country.isoCode})"),
+      ],
+    ),
+  );
+
+
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -28,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 key: _formKey,
                 child: Container(
                   margin: EdgeInsets.all(20),
-                  height: size.height*0.4,
+                  height: size.height*0.5,
                   decoration: BoxDecoration(
                     color: Colors.white,
 
@@ -38,9 +65,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+
                       Container(
                         alignment: Alignment.center,
                         margin: EdgeInsets.only(top: 60, bottom: 5),
+
                         child: Text(
                           'Enter your mobile number',
                           style: TextStyle(
@@ -59,17 +88,37 @@ class _LoginScreenState extends State<LoginScreen> {
                               color: Colors.blue),
                         ),
                       ),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: SizedBox(
+                          height:20,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left:24.0),
+                            child: CountryPickerDropdown(
+                            initialValue: 'IN',
+                              itemBuilder: _buildDropdownItem,
+                              priorityList:[
+
+                                CountryPickerUtils.getCountryByIsoCode('IN'),
+                                CountryPickerUtils.getCountryByIsoCode('US'),
+                              ],
+                              sortComparator: (Country a, Country b) => a.isoCode.compareTo(b.isoCode),
+                              onValuePicked: (Country country) {
+                                setState(() {
+                                  code = "+${country.phoneCode}";
+                                });
+                                print(code);
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
                       Container(
                         width: size.width / 1.2,
                         height: size.height / 11,
                         margin: EdgeInsets.only(right: 20, left: 20),
                         child: TextFormField(
-                          validator: (value) {
-                            if (value.isEmpty || value.length < 10) {
-                              return 'Please enter a valid mobile number';
-                            }
-                            return null;
-                          },
+
                           decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10)
@@ -77,9 +126,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               hintText: 'Mobile Number',
                               prefix: Padding(
                                 padding: EdgeInsets.all(4),
-                                child: Text('+91'),
+                                child: Text(code),
                               )),
-                          maxLength: 10,
+
                           keyboardType: TextInputType.number,
                           controller: _controller,
                         ),
@@ -99,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             if (_formKey.currentState.validate()) {
                               return Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) =>
-                                      OtpScreen(phone: _controller.text)));
+                                      OtpScreen(phone: "$code${_controller.text}")));
                             }
                           },
                           child: Text(
