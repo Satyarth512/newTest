@@ -4,7 +4,7 @@ Demo Project.
 
 
 ## Download
-- [Download Apk From Here](https://drive.google.com/file/d/1ESKAVhzq-sQ8A4fN6yHx5blnqiIERW4N/view?usp=sharing)
+- [Download Apk From Here](https://drive.google.com/file/d/105WmNh4ZPhRj8WlwQM8ozUtMIptHq3IR/view?usp=sharing)
 
 ### Usage
 Implemented the phone authentication.
