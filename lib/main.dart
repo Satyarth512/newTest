@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:newapp/screen/authentication/authScreen.dart';
+import 'package:newapp/screen/mainScreen.dart';
 
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       title: 'Test App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+
       ),
 
       // onGenerateRoute: AuthScreen(),

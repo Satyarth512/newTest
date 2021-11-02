@@ -43,11 +43,11 @@ class _OtpScreenState extends State<OtpScreen> {
             child: Align(
               alignment: Alignment.center,
               child: Text(
-                'Verify ${widget.phone}',
+                'Verify : ${widget.phone}',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    color: Colors.black),
+                    fontSize: 20,
+                    color: Colors.blueGrey),
               ),
             ),
           ),
@@ -62,21 +62,39 @@ class _OtpScreenState extends State<OtpScreen> {
             padding: const EdgeInsets.all(35.0),
             child: PinPut(
               fieldsCount: 6,
-              textStyle:
-                  const TextStyle(fontSize: 25.0, color: Colors.lightGreen),
+              textStyle: const TextStyle(
+                fontSize: 25.0,
+                color: Colors.blueGrey,
+              ),
               eachFieldWidth: 40.0,
               eachFieldHeight: 55.0,
               focusNode: _pinPutFocusNode,
               controller: _pinPutController,
               submittedFieldDecoration: pinPutDecoration.copyWith(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.lightGreen)),
-              selectedFieldDecoration: pinPutDecoration.copyWith(
-                  color: Colors.white60,
-                  border: Border.all(color: Colors.grey)),
-              followingFieldDecoration: pinPutDecoration.copyWith(
-                  color: Colors.white60,
-                  border: Border.all(color: Colors.grey)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blueGrey,
+                    spreadRadius: 0.2,
+                    offset: Offset(0, 1),
+                  )
+                ],
+                color: Colors.white,
+                border: Border.all(color: Colors.white),
+              ),
+              selectedFieldDecoration: pinPutDecoration.copyWith(boxShadow: [
+                BoxShadow(
+                    color: Colors.blueGrey.shade100,
+                    spreadRadius: 0.5,
+                    offset: Offset(0, 1))
+              ], color: Colors.white, border: Border.all(color: Colors.white)),
+              followingFieldDecoration: pinPutDecoration.copyWith(boxShadow: [
+                BoxShadow(
+                  color: Colors.blueGrey.shade100,
+                  spreadRadius: 0.5,
+                  blurRadius: 1,
+                  offset: Offset(0, 1),
+                ),
+              ], color: Colors.white, border: Border.all(color: Colors.white)),
               pinAnimationType: PinAnimationType.slide,
               onSubmit: (pin) async {
                 try {
@@ -144,9 +162,7 @@ class _OtpScreenState extends State<OtpScreen> {
         .get()
         .then((DocumentSnapshot documentSnapshot) async {
       if (documentSnapshot.exists) {
-         data
-            .doc(_auth.currentUser.uid)
-            .update({"token": token});
+        data.doc(_auth.currentUser.uid).update({"token": token});
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => DashBoard()),
@@ -157,7 +173,7 @@ class _OtpScreenState extends State<OtpScreen> {
           "token": token,
           'name': '',
         });
-       await  Future.delayed(Duration(seconds: 2));
+        await Future.delayed(Duration(seconds: 2));
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => DashBoard()),
